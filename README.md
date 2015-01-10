@@ -6,7 +6,7 @@ Overview
 
 This library provides scalaz specific extensions to scodec-core and scodec-bits. It provides typeclass instances for many data types (e.g., `Monoid[BitVector]`, `Monad[Attempt]`, `InvariantFunctor[Codec]`) and syntax for converting between `scodec.Attempt` and `scalaz.\/`.
 
-All typeclass instances are syntax extensions are defined in the `scodec.interop.scalaz` package, so usage looks like:
+All typeclass instances and syntax extensions are defined in the `scodec.interop.scalaz` package, so usage looks like:
 
 ```scala
 import scodec.interop.scalaz._
