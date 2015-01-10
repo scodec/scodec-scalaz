@@ -5,7 +5,7 @@ import _root_.scalaz._
 import scodec.bits.{ BitVector, ByteVector }
 import scodec._
 
-/** Providers interop between scodec-core and scalaz. */
+/** Provides interop between scodec-core and scalaz. */
 package object scalaz {
 
   /** Extension methods for an `Err \/ A`. */
