@@ -1,0 +1,11 @@
+Scala Codec Scalaz Integration
+Copyright 2015 Michael Pilquist
+Licensed under BSD 3-clause license (see LICENSE)
+
+The Scala library is distributed with the application.
+Copyright (c) 2002-2015 EPFL
+Copyright (c) 2011-2015 Typesafe, Inc.
+Licensed under BSD-style license (see licenses/LICENSE_Scala)
+
+Portions of Scalaz are distributed with the application.
+Licensed under BSD-style license (see licenses/LICENSE_Scalaz)
