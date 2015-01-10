@@ -17,7 +17,7 @@ package object scalaz {
   /** Extension methods for an `Attempt[A]`. */
   implicit class AttemptSyntax[A](val self: Attempt[A]) extends AnyVal {
     /** Converts this attempt to a disjunction. */
-    def toDisjunction: Err \/ A = self.fold(\/.right, \/.left)
+    def toDisjunction: Err \/ A = self.fold(\/.left, \/.right)
   }
 
   /** Extension methods for a `Codec[A]`. */
