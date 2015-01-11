@@ -1,5 +1,7 @@
 package scodec.interop
 
+import language.higherKinds
+
 import _root_.scalaz._
 
 import scodec.bits.{ BitVector, ByteVector }
@@ -33,19 +35,32 @@ package object scalaz {
   }
 
   implicit val BitVectorMonoidInstance: Monoid[BitVector] = Monoid.instance(_ ++ _, BitVector.empty)
+  implicit val BitVectorShowInstance: Show[BitVector] = Show.showFromToString
+  implicit val BitVectorEqualInstance: Equal[BitVector] = Equal.equalA
 
   implicit val ByteVectorMonoidInstance: Monoid[ByteVector] = Monoid.instance(_ ++ _, ByteVector.empty)
+  implicit val ByteVectorShowInstance: Show[ByteVector] = Show.showFromToString
+  implicit val ByteVectorEqualInstance: Equal[ByteVector] = Equal.equalA
 
   implicit val AttemptMonad: Monad[Attempt] = new Monad[Attempt] {
     def point[A](a: => A) = Attempt.successful(a)
     def bind[A, B](fa: Attempt[A])(f: A => Attempt[B]) = fa flatMap f
   }
+  implicit def AttemptShowInstance[A]: Show[Attempt[A]] = Show.showFromToString
+  implicit def AttemptEqualInstance[A]: Equal[Attempt[A]] = Equal.equalA
+
+  implicit val DecodeResultTraverseComonadInstance: Traverse[DecodeResult] with Comonad[DecodeResult] = new Traverse[DecodeResult] with Comonad[DecodeResult] {
+    def copoint[A](fa: DecodeResult[A]) = fa.value
+    def cobind[A, B](fa: DecodeResult[A])(f: DecodeResult[A] => B) = DecodeResult(f(fa), fa.remainder)
+    def traverseImpl[G[_], A, B](fa: DecodeResult[A])(f: A => G[B])(implicit G: Applicative[G]) = G.map(f(fa.value)) { b => DecodeResult(b, fa.remainder) }
+  }
+  implicit def DecodeResultShowInstance[A]: Show[DecodeResult[A]] = Show.showFromToString[DecodeResult[A]]
+  implicit def DecodeResultEqualInstance[A]: Equal[DecodeResult[A]] = Equal.equalA
 
   implicit val DecoderMonadInstance: Monad[Decoder] = new Monad[Decoder] {
     def point[A](a: => A) = Decoder.point(a)
     def bind[A, B](fa: Decoder[A])(f: A => Decoder[B]) = fa flatMap f
   }
-
   implicit def DecoderMonoidInstance[A](implicit A: Monoid[A]): Monoid[Decoder[A]] = new Monoid[Decoder[A]] {
     def zero = Decoder.point(A.zero)
     def append(x: Decoder[A], y: => Decoder[A]) = new Decoder[A] {
@@ -56,22 +71,25 @@ package object scalaz {
       } yield A.append(first, second)).decode(bits)
     }
   }
+  implicit def DecoderShowInstance[A]: Show[Decoder[A]] = Show.showFromToString[Decoder[A]]
 
   implicit val EncoderCovariantInstance: Contravariant[Encoder] = new Contravariant[Encoder] {
     def contramap[A, B](fa: Encoder[A])(f: B => A) = fa contramap f
   }
-
   implicit val EncoderCorepresentableAttemptInstance: Corepresentable[Encoder, Attempt[BitVector]] = new Corepresentable[Encoder, Attempt[BitVector]] {
     def corep[A](f: A => Attempt[BitVector]): Encoder[A] = Encoder(f)
     def uncorep[A](f: Encoder[A]): A => Attempt[BitVector] = a => f.encode(a)
   }
+  implicit def EncoderShowInstance[A]: Show[Encoder[A]] = Show.showFromToString[Encoder[A]]
 
   implicit val GenCodecProfunctorInstance: Profunctor[GenCodec] = new Profunctor[GenCodec] {
     def mapfst[A, B, C](fab: GenCodec[A, B])(f: C => A): GenCodec[C, B] = fab.contramap(f)
     def mapsnd[A, B, C](fab: GenCodec[A, B])(f: B => C): GenCodec[A, C] = fab.map(f)
   }
+  implicit def GenCodecShowInstance[A, B]: Show[GenCodec[A, B]] = Show.showFromToString[GenCodec[A, B]]
 
   implicit val CodecInvariantFunctorInstance: InvariantFunctor[Codec] = new InvariantFunctor[Codec] {
     def xmap[A, B](fa: Codec[A], f: A => B, g: B => A): Codec[B] = fa.xmap(f, g)
   }
+  implicit def CodecShowInstance[A]: Show[Codec[A]] = Show.showFromToString[Codec[A]]
 }
