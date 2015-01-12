@@ -52,6 +52,7 @@ package object scalaz {
   implicit val DecodeResultTraverseComonadInstance: Traverse[DecodeResult] with Comonad[DecodeResult] = new Traverse[DecodeResult] with Comonad[DecodeResult] {
     def copoint[A](fa: DecodeResult[A]) = fa.value
     def cobind[A, B](fa: DecodeResult[A])(f: DecodeResult[A] => B) = DecodeResult(f(fa), fa.remainder)
+    override def map[A, B](fa: DecodeResult[A])(f: A => B) = fa map f
     def traverseImpl[G[_], A, B](fa: DecodeResult[A])(f: A => G[B])(implicit G: Applicative[G]) = G.map(f(fa.value)) { b => DecodeResult(b, fa.remainder) }
   }
   implicit def DecodeResultShowInstance[A]: Show[DecodeResult[A]] = Show.showFromToString[DecodeResult[A]]
