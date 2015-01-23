@@ -10,7 +10,7 @@ contributors ++= Seq(Contributor("mpilquist", "Michael Pilquist"), Contributor("
 rootPackage := "scodec.interop.scalaz"
 
 libraryDependencies ++= Seq(
-  "org.scodec" %% "scodec-core" % "1.7.0-SNAPSHOT",
+  "org.scodec" %% "scodec-core" % "1.7.0-RC1",
   "org.scalaz" %% "scalaz-core" % "7.1.0"
 )
 
