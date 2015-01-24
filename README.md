@@ -17,7 +17,7 @@ myCodec.decode(bitVector).toDisjunction
 Getting Binaries
 ----------------
 
-See the [releases page on the wiki](https://github.com/scodec/scodec-scalaz/wiki/Releases).
+See the [releases page on the website](https://scodec.org/releases/).
 
 Administrative
 --------------
