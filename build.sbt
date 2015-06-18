@@ -5,12 +5,14 @@ scodecModule := "scodec-scalaz"
 
 scodecPrimaryModule
 
+scodecPrimaryModuleJvm
+
 contributors ++= Seq(Contributor("mpilquist", "Michael Pilquist"), Contributor("pchiusano", "Paul Chiusano"))
 
 rootPackage := "scodec.interop.scalaz"
 
 libraryDependencies ++= Seq(
-  "org.scodec" %% "scodec-core" % "1.7.0",
+  "org.scodec" %% "scodec-core" % "1.8.0",
   "org.scalaz" %% "scalaz-core" % "7.1.0"
 )
 
@@ -24,5 +26,5 @@ OsgiKeys.importPackage := Seq(
   "*"
 )
 
-binaryIssueFilters ++= Seq(
+binaryIssueFilters := Seq(
 )
