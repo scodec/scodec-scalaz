@@ -17,7 +17,7 @@ myCodec.decode(bitVector).toDisjunction
 Getting Binaries
 ----------------
 
-See the [releases page on the website](https://scodec.org/releases/).
+See the [releases page on the website](http://scodec.org/releases/).
 
 Administrative
 --------------
