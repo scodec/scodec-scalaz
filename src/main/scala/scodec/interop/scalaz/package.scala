@@ -8,7 +8,7 @@ import scodec.bits.{ BitVector, ByteVector }
 import scodec._
 
 /** Provides interop between scodec-core and scalaz. */
-package object scalaz extends ScalazInstances {
+package object scalaz extends scodec.interop.scalaz.ScalazInstancesLowPriority {
 
   /** Extension methods for an `Err \/ A`. */
   implicit class ErrDisjunctionSyntax[A](val self: Err \/ A) extends AnyVal {
@@ -86,21 +86,4 @@ package object scalaz extends ScalazInstances {
     def xmap[A, B](fa: Codec[A], f: A => B, g: B => A): Codec[B] = fa.xmap(f, g)
   }
   implicit def CodecShowInstance[A]: Show[Codec[A]] = Show.showFromToString[Codec[A]]
-}
-
-sealed abstract class ScalazInstances {
-
-  implicit final def DecoderSemigroupInstance[A](implicit A: Semigroup[A]): Semigroup[Decoder[A]] =
-    new DecoderSemigroup[A]()
-
-}
-
-private class DecoderSemigroup[A](implicit A: Semigroup[A]) extends Semigroup[Decoder[A]] {
-  def append(x: Decoder[A], y: => Decoder[A]) = new Decoder[A] {
-    private lazy val yy = y
-    def decode(bits: BitVector) = (for {
-      first <- DecodingContext(x)
-      second <- DecodingContext(yy)
-    } yield A.append(first, second)).decode(bits)
-  }
 }
