@@ -42,7 +42,7 @@ package object scalaz extends scalaz.ScalazInstancesLowPriority {
   implicit val ByteVectorShowInstance: Show[ByteVector] = Show.showFromToString
   implicit val ByteVectorEqualInstance: Equal[ByteVector] = Equal.equalA
 
-  implicit val AttemptMonad: Monad[Attempt] = new Monad[Attempt] with Traverse[Attempt] {
+  implicit val AttemptInstance: Monad[Attempt] with Traverse[Attempt] = new Monad[Attempt] with Traverse[Attempt] {
     def point[A](a: => A) = Attempt.successful(a)
     def bind[A, B](fa: Attempt[A])(f: A => Attempt[B]) = fa flatMap f
 
