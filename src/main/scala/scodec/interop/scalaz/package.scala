@@ -8,7 +8,7 @@ import scodec.bits.{ BitVector, ByteVector }
 import scodec._
 
 /** Provides interop between scodec-core and scalaz. */
-package object scalaz extends scodec.interop.scalaz.ScalazInstancesLowPriority {
+package object scalaz extends scalaz.ScalazInstancesLowPriority {
 
   /** Extension methods for an `Err \/ A`. */
   implicit class ErrDisjunctionSyntax[A](val self: Err \/ A) extends AnyVal {
@@ -42,9 +42,15 @@ package object scalaz extends scodec.interop.scalaz.ScalazInstancesLowPriority {
   implicit val ByteVectorShowInstance: Show[ByteVector] = Show.showFromToString
   implicit val ByteVectorEqualInstance: Equal[ByteVector] = Equal.equalA
 
-  implicit val AttemptMonad: Monad[Attempt] = new Monad[Attempt] {
+  implicit val AttemptMonad: Monad[Attempt] = new Monad[Attempt] with Traverse[Attempt] {
     def point[A](a: => A) = Attempt.successful(a)
     def bind[A, B](fa: Attempt[A])(f: A => Attempt[B]) = fa flatMap f
+
+    def traverseImpl[G[_], A, B](fa: Attempt[A])(f: A => G[B])(implicit appG: Applicative[G]): G[Attempt[B]] =
+      fa match {
+        case Attempt.Successful(value) => appG.map(f(value))(Attempt.Successful(_))
+        case fail@Attempt.Failure(err) => appG.point(fail)
+      }
   }
   implicit def AttemptShowInstance[A]: Show[Attempt[A]] = Show.showFromToString
   implicit def AttemptEqualInstance[A]: Equal[Attempt[A]] = Equal.equalA
