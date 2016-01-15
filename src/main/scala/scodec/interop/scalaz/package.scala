@@ -3,6 +3,7 @@ package scodec.interop
 import language.higherKinds
 
 import _root_.scalaz._
+import _root_.scalaz.concurrent.Task
 
 import scodec.bits.{ BitVector, ByteVector }
 import scodec._
@@ -20,6 +21,14 @@ package object scalaz extends scalaz.ScalazInstancesLowPriority {
   implicit class AttemptSyntax[A](val self: Attempt[A]) extends AnyVal {
     /** Converts this attempt to a disjunction. */
     def toDisjunction: Err \/ A = self.fold(\/.left, \/.right)
+
+    /** Converts this attempt to a task. */
+    def toTask: Task[A] =
+      toTask(err => new IllegalArgumentException(err.message))
+
+    /** Converts this attempt to a task, using `f` to derive a Throwable if the attempt fails. */
+    def toTask(f: Err => Throwable): Task[A] =
+      self.fold(e => Task.fail(f(e)), Task.now)
   }
 
   /** Extension methods for a `Codec[A]`. */
