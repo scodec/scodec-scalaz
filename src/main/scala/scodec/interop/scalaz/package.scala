@@ -24,7 +24,7 @@ package object scalaz extends scalaz.ScalazInstancesLowPriority {
 
     /** Converts this attempt to a task. */
     def toTask: Task[A] =
-      toTask(err => new IllegalArgumentException(err.message))
+      toTask(err => new IllegalArgumentException(err.messageWithContext))
 
     /** Converts this attempt to a task, using `f` to derive a Throwable if the attempt fails. */
     def toTask(f: Err => Throwable): Task[A] =
