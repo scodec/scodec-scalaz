@@ -13,8 +13,8 @@ rootPackage := "scodec.interop.scalaz"
 
 libraryDependencies ++= Seq(
   "org.scodec" %% "scodec-core" % "1.10.0",
-  "org.scalaz" %% "scalaz-core" % "7.2.0",
-  "org.scalaz" %% "scalaz-concurrent" % "7.2.0"
+  "org.scalaz" %% "scalaz-core" % "7.2.3",
+  "org.scalaz" %% "scalaz-concurrent" % "7.2.3"
 )
 
 OsgiKeys.exportPackage := Seq("scodec.interop.scalaz;version=${Bundle-Version}")
