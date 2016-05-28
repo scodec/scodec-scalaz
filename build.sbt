@@ -14,7 +14,7 @@ rootPackage := "scodec.interop.scalaz"
 crossScalaVersions := crossScalaVersions.value.filterNot { _.startsWith("2.12.") }
 
 libraryDependencies ++= Seq(
-  "org.scodec" %% "scodec-core" % "1.9.0",
+  "org.scodec" %% "scodec-core" % "1.10.0",
   "org.scalaz" %% "scalaz-core" % "7.1.0",
   "org.scalaz" %% "scalaz-concurrent" % "7.1.0"
 )
