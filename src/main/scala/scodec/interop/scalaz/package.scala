@@ -82,8 +82,15 @@ package object scalaz extends scalaz.ScalazInstancesLowPriority {
   }
   implicit def DecoderShowInstance[A]: Show[Decoder[A]] = Show.showFromToString[Decoder[A]]
 
-  implicit val EncoderCovariantInstance: Contravariant[Encoder] = new Contravariant[Encoder] {
+  implicit val EncoderCovariantInstance: Divide[Encoder] = new Divide[Encoder] {
     def contramap[A, B](fa: Encoder[A])(f: B => A) = fa contramap f
+    def divide[A, B, C](fa: Encoder[A], fb: Encoder[B])(f: C => (A, B)) = new Encoder[C]{
+      def sizeBound = fa.sizeBound + fb.sizeBound
+      def encode(c: C) = {
+        val (a, b) = f(c)
+        Apply[Attempt].apply2(fa.encode(a), fb.encode(b))(_ ++ _)
+      }
+    }
   }
   implicit val EncoderCorepresentableAttemptInstance: Corepresentable[Encoder, Attempt[BitVector]] = new Corepresentable[Encoder, Attempt[BitVector]] {
     def corep[A](f: A => Attempt[BitVector]): Encoder[A] = Encoder(f)
