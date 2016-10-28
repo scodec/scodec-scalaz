@@ -12,9 +12,9 @@ contributors ++= Seq(Contributor("mpilquist", "Michael Pilquist"), Contributor("
 rootPackage := "scodec.interop.scalaz"
 
 libraryDependencies ++= Seq(
-  "org.scodec" %% "scodec-core" % "1.10.0",
-  "org.scalaz" %% "scalaz-core" % "7.1.8",
-  "org.scalaz" %% "scalaz-concurrent" % "7.1.8"
+  "org.scodec" %% "scodec-core" % "1.10.3",
+  "org.scalaz" %% "scalaz-core" % "7.1.10",
+  "org.scalaz" %% "scalaz-concurrent" % "7.1.10"
 )
 
 OsgiKeys.exportPackage := Seq("scodec.interop.scalaz;version=${Bundle-Version}")

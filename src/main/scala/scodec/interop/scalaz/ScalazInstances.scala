@@ -1,7 +1,5 @@
 package scodec.interop.scalaz
 
-import language.higherKinds
-
 import _root_.scalaz._
 
 import scodec.bits.BitVector
