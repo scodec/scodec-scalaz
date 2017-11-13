@@ -11,10 +11,13 @@ contributors ++= Seq(Contributor("mpilquist", "Michael Pilquist"), Contributor("
 
 rootPackage := "scodec.interop.scalaz"
 
+crossScalaVersions := Seq("2.10.6", "2.11.11", "2.12.4")
+scalaVersion := "2.11.11"
+
 libraryDependencies ++= Seq(
   "org.scodec" %% "scodec-core" % "1.10.3",
-  "org.scalaz" %% "scalaz-core" % "7.1.12",
-  "org.scalaz" %% "scalaz-concurrent" % "7.1.12"
+  "org.scalaz" %% "scalaz-core" % "7.2.16",
+  "org.scalaz" %% "scalaz-concurrent" % "7.2.16"
 )
 
 OsgiKeys.exportPackage := Seq("scodec.interop.scalaz;version=${Bundle-Version}")
