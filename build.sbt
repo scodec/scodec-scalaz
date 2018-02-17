@@ -1,11 +1,6 @@
-import com.typesafe.tools.mima.core._
-import com.typesafe.tools.mima.plugin.MimaKeys._
-
 scodecModule := "scodec-scalaz"
 
-scodecPrimaryModule
-
-scodecPrimaryModuleJvm
+enablePlugins(ScodecPrimaryModuleJVMSettings)
 
 contributors ++= Seq(Contributor("mpilquist", "Michael Pilquist"), Contributor("pchiusano", "Paul Chiusano"))
 
@@ -27,5 +22,5 @@ OsgiKeys.importPackage := Seq(
   "*"
 )
 
-binaryIssueFilters := Seq(
+mimaBinaryIssueFilters := Seq(
 )
